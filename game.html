@@ -91,7 +91,6 @@
 
       // Plays a round of the game
       function playSingleRound(playerSelection, computerSelection) {
-        playerSelection = getPlayerSelection();
         let playerWins = evalRound(playerSelection, computerSelection);
         if (playerWins === undefined) {
           console.log(`Draw: ${playerSelection} is ${computerSelection}`);
@@ -126,7 +125,7 @@
 
         let roundResult = '';
         for(i = 0; i < numberOfRounds; i++) {
-          roundResult = playSingleRound('', computerPlay());
+          roundResult = playSingleRound(getPlayerSelection(), computerPlay());
           if(roundResult === 'win') {
             playerScore++;
           } else if(roundResult == 'lose') {

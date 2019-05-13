@@ -1,2 +1,2 @@
-# top-rock-paper-scissors
-Simple console RPS agains t the computer
+# Rock Paper Scissors (TOP project)
+Simple console RPS against the computer, written in Javascript.
