@@ -93,15 +93,48 @@
       function playSingleRound(playerSelection, computerSelection) {
         playerSelection = getPlayerSelection();
         let playerWins = evalRound(playerSelection, computerSelection);
-        if(playerWins === undefined) {
-          return `Draw: ${playerSelection} is ${computerSelection}`;
+        if (playerWins === undefined) {
+          console.log(`Draw: ${playerSelection} is ${computerSelection}`);
+          return 'draw';
         } else if (playerWins) {
-          return `You win, ${playerSelection} beats ${computerSelection}`;
+          console.log(`You win, ${playerSelection} beats ${computerSelection}`);
+          return 'win';
         } else {
-          return `You lose, ${computerSelection} beats ${playerSelection}`;
+          console.log(`You lose, ${computerSelection} beats ${playerSelection}`);
+          return 'lose';
         }
       }
 
+      // Returns the result of the game
+      function getFinalResults(playerScore, cpuScore) {
+        if(playerScore > cpuScore) {
+          return `You ${playerScore} - ${cpuScore} CPU -- A WINNER IS YOU`;
+        } else if(cpuScore > playerScore) {
+          return `You ${playerScore} - ${cpuScore} CPU -- A WINNER IS NOT YOU`;
+        } else {
+          return `You ${playerScore} - ${cpuScore} CPU -- DRAW`;
+        }
+      }
+
+      /************************************************************************
+       * GAME LOOP
+       ***********************************************************************/
+      function game() {
+        let playerScore = 0;
+        let cpuScore = 0;
+        const numberOfRounds = 5;
+
+        let roundResult = '';
+        for(i = 0; i < numberOfRounds; i++) {
+          roundResult = playSingleRound('', computerPlay());
+          if(roundResult === 'win') {
+            playerScore++;
+          } else if(roundResult == 'lose') {
+            cpuScore++;
+          }
+        }
+        return getFinalResults(playerScore, cpuScore);
+      }
 
     </script>
   </body>
