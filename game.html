@@ -49,6 +49,59 @@
         return choice;
       }
 
+      // Returns the user input for a selection
+      function promptPlayerSelection() {
+        return prompt('Please input "rock", "paper", or "scissors".', 'rock');
+      }
+
+      // Returns valid input string or undefined
+      function cleanPlayerSelection(input) {
+        let i = input.toLowerCase();
+        if (i === 'rock' || i === 'paper' || i === 'scissors') {
+          return i;
+        } else {
+          return undefined;
+        }
+      }
+
+      // Returns the player's lowercased selection
+      function getPlayerSelection() {
+        let choice = cleanPlayerSelection(promptPlayerSelection());
+        while(choice === undefined) {
+          console.log("Please input a valid selection.")
+          choice = cleanPlayerSelection(promptPlayerSelection());
+        }
+        return choice;
+      }
+
+      // Returns true if the player wins, false if it's the CPU, undefined if draw
+      function evalRound(player, cpu) {
+        if (player === 'rock' && cpu === 'scissors' ||
+            player === 'paper' && cpu === 'rock' ||
+            player === 'scissors' && cpu === 'paper') {
+              return true;
+        } else if(player === 'rock' && cpu === 'paper' ||
+                  player === 'paper' && cpu === 'scissors' ||
+                  player === 'scissors' && cpu === 'rock'){
+          return false;
+        } else {
+          return undefined;
+        }
+      }
+
+      // Plays a round of the game
+      function playSingleRound(playerSelection, computerSelection) {
+        playerSelection = getPlayerSelection();
+        let playerWins = evalRound(playerSelection, computerSelection);
+        if(playerWins === undefined) {
+          return `Draw: ${playerSelection} is ${computerSelection}`;
+        } else if (playerWins) {
+          return `You win, ${playerSelection} beats ${computerSelection}`;
+        } else {
+          return `You lose, ${computerSelection} beats ${playerSelection}`;
+        }
+      }
+
 
     </script>
   </body>
