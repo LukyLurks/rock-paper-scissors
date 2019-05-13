@@ -1,3 +1,5 @@
+<!-- Document for a simple game in console -->
+<!-- Everything will be in the script element -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,6 +8,48 @@
   </head>
   <body>
     <script>
+      /************************************************************************
+       * OVERVIEW
+       ***********************************************************************/
+       /*
+       - 1 player against the computer.
+       - A move is chosen by the computer that the user can't see.
+       - The user is prompted a choice that they'll enter as a string
+         ('rock', 'paper', or 'scissors', case insensitive.)
+       - Log a string announcing the result like "You Lose! Paper beats Rock"
+       - Save the score
+       - Make 5 rounds like that
+       - Announce the winner like "You 3 - 2 CPU \n A WINNER IS YOU"
+       */
+      /************************************************************************
+       * FUNCTIONS
+       ***********************************************************************/
+
+      // Returns a random integer in a range
+      function getRandomInt(n) {
+        return Math.floor(Math.random() * Math.floor(n));
+      }
+
+      // Returns randomly 'rock', 'paper' or 'scissors'
+      function computerPlay() {
+        let choice = getRandomInt(3);
+        switch(choice) {
+          case 0:
+            choice = 'rock';
+            break;
+          case 1:
+            choice = 'paper';
+            break;
+          case 2:
+            choice = 'scissors';
+            break;
+          default:
+            choice = 'rock';
+        }
+        return choice;
+      }
+
+
     </script>
   </body>
 </html>
