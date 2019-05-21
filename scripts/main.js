@@ -13,7 +13,5 @@
   */
 
 requirejs(['rps-functions'], function(rpsFunctions) {
-  let gameResult = rpsFunctions.game();
-  console.log(gameResult);
-  return gameResult;
+  rpsFunctions.playRockPaperScissors();
 });

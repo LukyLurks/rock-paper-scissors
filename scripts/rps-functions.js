@@ -10,12 +10,14 @@ define(['rps-subfunctions'], function(rpsLib) {
 
   // Returns the player's lowercased selection
   const getPlayerSelection = function() {
-    let choice = rpsLib.cleanPlayerSelection(rpsLib.promptPlayerSelection());
-    while(choice === undefined) {
-      console.log("Please input a valid selection.")
-      choice = rpsLib.cleanPlayerSelection(rpsLib.promptPlayerSelection());
-    }
-    return choice;
+    const buttons = document.querySelectorAll('button');
+    let choice = undefined;
+    buttons.forEach((button) => {
+      button.addEventListener('click', function(e) {
+        choice = button.textContent.toLowerCase();
+      });
+      return choice;
+    });
   }
 
   // Returns true if the player wins, false if it's the CPU, undefined if draw
@@ -41,42 +43,99 @@ define(['rps-subfunctions'], function(rpsLib) {
     let playerWins = evalRound(playerSelection, computerSelection);
     if (playerWins === undefined) {
       console.log(`Draw: ${playerSelection} is ${computerSelection}`);
-      return 'draw';
+      return undefined;
     } else if (playerWins) {
       console.log(`You win, ${playerSelection} beats ${computerSelection}`);
-      return 'win';
+      return true;
     } else {
       console.log(`You lose, ${computerSelection} beats ${playerSelection}`);
-      return 'lose';
+      return false;
     }
   }
 
-  // Returns the result of the game
-  const getFinalResults = function(playerScore, cpuScore) {
-    if(playerScore > cpuScore) {
-      return `You ${playerScore} - ${cpuScore} CPU -- A WINNER IS YOU`;
-    } else if(cpuScore > playerScore) {
-      return `You ${playerScore} - ${cpuScore} CPU -- A WINNER IS NOT YOU`;
-    } else {
-      return `You ${playerScore} - ${cpuScore} CPU -- DRAW`;
+  const resetScore = function() {
+    this.player.textContent = 0;
+    this.cpu.textContent = 0;
+  }
+
+  const resetRoundResult = function() {
+    let narration = this.div.children[0];
+    narration.textContent = '';
+  }
+
+  const resetGameResult = function() {
+    let result = this.div.children[0];
+    result.textContent = '';
+  }
+
+  const isGameover = function(score) {
+    let playerWins = +(score.player.textContent) === 5;
+    let cpuWins = +(score.cpu.textContent) === 5;
+    return playerWins || cpuWins;
+  }
+
+  const updateScore = function(playerWins) {
+    if(playerWins) {
+      +(this.player.textContent)++;
+    } else if(!playerWins) {
+      +(this.cpu.textContent)++;
     }
+  }
+
+  const updateRoundResult = function(playerWins) {
+    let narration = this.div.children[0];
+    if(playerWins) {
+      narration.textContent = 'Good!';
+    } else if(!playerWins) {
+      narration.textContent = 'Wrong guess.';
+    } else {
+      narration.textContent = 'It\'s a tie.';
+    }
+  }
+
+  const updateGameResult = function(score) {
+    let result = this.div.children[0];
+    if(score.player > score.cpu) {
+      result.textContent = 'You win!';
+      return true;
+    } else if(score.cpu > score.player) {
+      result.textContent = 'You lose...'
+      return false;
+    }
+    return undefined;
   }
 
   // Game loop
-  const game = function() {
-    let playerScore = 0;
-    let cpuScore = 0;
-    const numberOfRounds = 5;
-    let roundResult = '';
-    for(i = 0; i < numberOfRounds; i++) {
-      roundResult = playSingleRound();
-      if(roundResult === 'win') {
-        playerScore++;
-      } else if(roundResult == 'lose') {
-        cpuScore++;
-      }
+  const playRockPaperScissors = function() {
+    const score = {
+      player: document.querySelector('#playerScore'),
+      cpu: document.querySelector('#cpuScore'),
+      reset: resetScore,
+      update: updateScore
+    };
+
+    const roundResult = {
+      div: document.querySelector('#narration'),
+      reset: resetRoundResult,
+      update: updateRoundResult
+    };
+
+    const gameResult = {
+      div: document.querySelector('#result'),
+      reset: resetGameResult,
+      update: updateGameResult
+    };
+
+    score.reset();
+    roundResult.reset();
+    gameResult.reset();
+
+    while(!isGameover(score)) {
+      playerWins = playSingleRound();
+      score.update(playerWins);
+      roundResult.update(playerWins);
     }
-    return getFinalResults(playerScore, cpuScore);
+    return gameResult.update(score);
   }
 
   return {
@@ -84,7 +143,6 @@ define(['rps-subfunctions'], function(rpsLib) {
     getPlayerSelection: getPlayerSelection,
     evalRound: evalRound,
     playSingleRound: playSingleRound,
-    getFinalResults: getFinalResults,
-    game: game
+    playRockPaperScissors: playRockPaperScissors
   }
 });
