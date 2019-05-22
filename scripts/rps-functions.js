@@ -8,18 +8,6 @@ define(['rps-subfunctions'], function(rpsLib) {
     return rpsLib.generateCpuSelection();
   }
 
-  // Returns the player's lowercased selection
-  const getPlayerSelection = function() {
-    const buttons = document.querySelectorAll('button');
-    let choice = undefined;
-    buttons.forEach((button) => {
-      button.addEventListener('click', function(e) {
-        choice = button.textContent.toLowerCase();
-      });
-      return choice;
-    });
-  }
-
   // Returns true if the player wins, false if it's the CPU, undefined if draw
   const evalRound = function(player, cpu) {
     if (player === 'rock' && cpu === 'scissors' ||
@@ -36,8 +24,7 @@ define(['rps-subfunctions'], function(rpsLib) {
   }
 
   // Plays a round of the game
-  const playSingleRound = function() {
-    let playerSelection = getPlayerSelection();
+  const playSingleRound = function(playerSelection) {
     let computerSelection = getComputerSelection();
 
     let playerWins = evalRound(playerSelection, computerSelection);
@@ -77,7 +64,7 @@ define(['rps-subfunctions'], function(rpsLib) {
   const updateScore = function(playerWins) {
     if(playerWins) {
       +(this.player.textContent)++;
-    } else if(!playerWins) {
+    } else if(playerWins === false) {
       +(this.cpu.textContent)++;
     }
   }
@@ -86,21 +73,23 @@ define(['rps-subfunctions'], function(rpsLib) {
     let narration = this.div.children[0];
     if(playerWins) {
       narration.textContent = 'Good!';
-    } else if(!playerWins) {
-      narration.textContent = 'Wrong guess.';
-    } else {
+    } else if(playerWins === undefined) {
       narration.textContent = 'It\'s a tie.';
+    } else {
+      narration.textContent = 'Wrong guess.';
     }
   }
 
   const updateGameResult = function(score) {
     let result = this.div.children[0];
-    if(score.player > score.cpu) {
+    if(+score.player.textContent > +score.cpu.textContent) {
       result.textContent = 'You win!';
       return true;
-    } else if(score.cpu > score.player) {
+    } else if(+score.cpu.textContent > +score.player.textContent) {
       result.textContent = 'You lose...'
       return false;
+    } else {
+      result.textContent = 'It can\'t end like this.'
     }
     return undefined;
   }
@@ -130,17 +119,27 @@ define(['rps-subfunctions'], function(rpsLib) {
     roundResult.reset();
     gameResult.reset();
 
-    while(!isGameover(score)) {
-      playerWins = playSingleRound();
-      score.update(playerWins);
-      roundResult.update(playerWins);
-    }
-    return gameResult.update(score);
+    let endlessLoopGuard = 15;
+
+    let playerSelection = '';
+    let playerWins = undefined;
+    const buttons = document.querySelectorAll('.playerButton');
+    buttons.forEach((button) => {
+      button.addEventListener('click', function(e) {
+        playerSelection = button.textContent.toLowerCase();
+        playerWins = playSingleRound(playerSelection);
+        score.update(playerWins);
+        roundResult.update(playerWins);
+        endlessLoopGuard--;
+        if(isGameover(score) || endlessLoopGuard < 0) {
+          return gameResult.update(score);
+        }
+      });
+    });
   }
 
   return {
     getComputerSelection: getComputerSelection,
-    getPlayerSelection: getPlayerSelection,
     evalRound: evalRound,
     playSingleRound: playSingleRound,
     playRockPaperScissors: playRockPaperScissors

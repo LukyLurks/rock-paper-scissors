@@ -11,7 +11,6 @@
     <p>First to 5 wins!</p>
 
     <table>
-      <caption>Score for the current game</caption>
       <thead>
         <tr>
           <th colspan="2">Score</th>
@@ -31,15 +30,15 @@
 
     <div id="playerSelectMenu">
       <p>Choose your fighter:</p>
-      <ul id="playerButtons">
-        <li><button id="rockButton">Rock</button></li>
-        <li><button id="paperButton">Paper</button></li>
-        <li><button id="scissorsButton">Scissors</button></li>
+      <ul>
+        <li><button class="playerButton">Rock</button></li>
+        <li><button class="playerButton">Paper</button></li>
+        <li><button class="playerButton">Scissors</button></li>
       </ul>
+      <button id='newGame'>New Game</button>
     </div>
 
     <div id="gameScreen">
-      <div id="visuals"></div>
       <div id="narration">
         <p></p>
       </div>

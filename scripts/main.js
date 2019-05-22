@@ -13,5 +13,6 @@
   */
 
 requirejs(['rps-functions'], function(rpsFunctions) {
+  console.log('hi');
   rpsFunctions.playRockPaperScissors();
 });
