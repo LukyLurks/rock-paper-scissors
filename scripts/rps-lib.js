@@ -105,9 +105,13 @@ define(function() {
     if(buttons.length !== undefined) {
       buttons.forEach((b) => {
         b.disabled = true;
+        b.classList.remove('enabled');
+        b.classList.add('disabled');
       });
     } else {
       buttons.disabled = true;
+      buttons.classList.remove('enabled');
+      buttons.classList.add('disabled');
     }
   }
 
@@ -115,9 +119,13 @@ define(function() {
     if(buttons.length !== undefined) {
       buttons.forEach((b) => {
         b.disabled = false;
+        b.classList.remove('disabled');
+        b.classList.add('enabled');
       });
     } else {
       buttons.disabled = false;
+      buttons.classList.remove('disabled');
+      buttons.classList.add('enabled');
     }
   }
 

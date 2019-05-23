@@ -4,38 +4,41 @@
   <head>
     <meta charset="utf-8">
     <link href="styles/reset.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
     <title>Rock Paper Scissors</title>
   </head>
   <body>
-    <h1>Rock Paper Scissors</h1>
-    <p>First to <span id="winScore">5</span> wins!</p>
-
-    <table>
-      <thead>
-        <tr>
-          <th colspan="2">Score</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>You</td>
-          <td>CPU</td>
-        </tr>
-        <tr>
-          <td id="playerScore">0</td>
-          <td id="cpuScore">0</td>
-        </tr>
-      </tbody>
-    </table>
+    <div>
+      <h1>Rock Paper Scissors</h1>
+      <p>First to <span id="winScore">5</span> wins!</p>
+    </div>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>You</td>
+            <td>CPU</td>
+          </tr>
+          <tr>
+            <td id="playerScore">0</td>
+            <td id="cpuScore">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <div id="playerSelectMenu">
-      <p>Choose your fighter:</p>
       <ul>
-        <li><button class="playerButton" disabled>Rock</button></li>
-        <li><button class="playerButton" disabled>Paper</button></li>
-        <li><button class="playerButton" disabled>Scissors</button></li>
+        <li><button class="playerButton disabled" disabled>Rock</button></li>
+        <li><button class="playerButton disabled" disabled>Paper</button></li>
+        <li><button class="playerButton disabled" disabled>Scissors</button></li>
       </ul>
-      <button id='newGame'>New Game</button>
+      <button id='newGame' class="enabled">New Game</button>
     </div>
 
     <div id="gameScreen">

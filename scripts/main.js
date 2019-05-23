@@ -18,8 +18,8 @@ requirejs(['rps-lib'], function(rpsLib) {
   const newGameButton = document.querySelector('#newGame');
   const rpsButtons = document.querySelectorAll('.playerButton');
   const winScoreText = document.querySelector('#winScore');
-
-  const winScore = 3;
+  
+  const winScore = 5;
   let playerSelection = '';
   let playerWins = undefined;
   winScoreText.textContent = winScore;
