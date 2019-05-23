@@ -94,6 +94,26 @@ define(['rps-subfunctions'], function(rpsLib) {
     return undefined;
   }
 
+  const disableButtons = function(buttons) {
+    if(buttons.length !== undefined) {
+      buttons.forEach((b) => {
+        b.disabled = true;
+      });
+    } else {
+      buttons.disabled = true;
+    }
+  }
+
+  const enableButtons = function(buttons) {
+    if(buttons.length !== undefined) {
+      buttons.forEach((b) => {
+        b.disabled = false;
+      });
+    } else {
+      buttons.disabled = false;
+    }
+  }
+
   // Game loop
   const playRockPaperScissors = function() {
     const score = {
@@ -114,24 +134,29 @@ define(['rps-subfunctions'], function(rpsLib) {
       reset: resetGameResult,
       update: updateGameResult
     };
-
-    score.reset();
-    roundResult.reset();
-    gameResult.reset();
-
-    let endlessLoopGuard = 15;
+    
+    const rpsButtons = document.querySelectorAll('.playerButton');
+    
+    const newGameButton = document.querySelector('#newGame');
+    newGameButton.addEventListener('click', function(e) {
+      score.reset();
+      roundResult.reset();
+      gameResult.reset();
+      enableButtons(rpsButtons);
+      disableButtons(newGameButton);
+    });
 
     let playerSelection = '';
     let playerWins = undefined;
-    const buttons = document.querySelectorAll('.playerButton');
-    buttons.forEach((button) => {
+    rpsButtons.forEach((button) => {
       button.addEventListener('click', function(e) {
         playerSelection = button.textContent.toLowerCase();
         playerWins = playSingleRound(playerSelection);
         score.update(playerWins);
         roundResult.update(playerWins);
-        endlessLoopGuard--;
-        if(isGameover(score) || endlessLoopGuard < 0) {
+        if(isGameover(score)) {
+          disableButtons(rpsButtons);
+          enableButtons(newGameButton);
           return gameResult.update(score);
         }
       });
@@ -139,9 +164,6 @@ define(['rps-subfunctions'], function(rpsLib) {
   }
 
   return {
-    getComputerSelection: getComputerSelection,
-    evalRound: evalRound,
-    playSingleRound: playSingleRound,
     playRockPaperScissors: playRockPaperScissors
   }
 });
