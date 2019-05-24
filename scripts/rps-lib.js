@@ -17,34 +17,21 @@ define(function() {
     return choice;
   }
 
-  // Returns undefined if it's a tie
-  const evalRound = function(player, cpu) {
-    let playerWins = player === 'rock' && cpu === 'scissors' ||
+  const playSingleRound = function(player, cpu) {
+    let playerWonRound = player === 'rock' && cpu === 'scissors' ||
         player === 'paper' && cpu === 'rock' ||
         player === 'scissors' && cpu === 'paper';
 
-    let playerLoses = player === 'rock' && cpu === 'paper' ||
+    let playerLostRound = player === 'rock' && cpu === 'paper' ||
         player === 'paper' && cpu === 'scissors' ||
         player === 'scissors' && cpu === 'rock';
 
-    if (playerWins) {
+    if (playerWonRound) {
       return true;
-    } else if(playerLoses) {
+    } else if(playerLostRound) {
       return false;
     } else {
       return undefined;
-    }
-  }
-
-  // Plays a round of the game
-  const playSingleRound = function(playerMove, cpuMove) {
-    let playerWins = evalRound(playerMove, cpuMove);
-    if (playerWins) {
-      return true;
-    } else if (playerWins === undefined) {
-      return undefined;
-    } else {
-      return false;
     }
   }
 
@@ -54,9 +41,9 @@ define(function() {
   }
 
   const resetRoundResult = function() {
-    let cpuText = this.div.children[0];
+    let cpuMoveText = this.div.children[0];
     let narration = this.div.children[1];
-    cpuText.textContent = '';
+    cpuMoveText.textContent = '';
     narration.textContent = '';
   }
 
@@ -65,36 +52,40 @@ define(function() {
     result.textContent = '';
   }
 
-  const isGameover = function(score, winScore) {
-    let playerWins = +(score.player.textContent) === winScore;
-    let cpuWins = +(score.cpu.textContent) === winScore;
-    return playerWins || cpuWins;
+  const isGameover = function(score, scoreToWin) {
+    let playerWonGame = +(score.player.textContent) === scoreToWin;
+    let cpuWonGame = +(score.cpu.textContent) === scoreToWin;
+    return playerWonGame || cpuWonGame;
   }
 
-  const updateScore = function(playerWins) {
-    if(playerWins) {
+  const updateScore = function(playerWonRound) {
+    if(playerWonRound) {
       +(this.player.textContent)++;
-    } else if(playerWins === false) {
+    // Not specifying false would increment CPU score for ties
+    } else if(playerWonRound === false) {
       +(this.cpu.textContent)++;
     }
   }
 
-  const updateRoundResult = function(playerWins, cpuMove) {
-    let cpuText = this.div.children[0];
-    cpuText.textContent =`The computer used ${cpuMove}.`;
+  // Indicates the CPU's move and who won the round
+  const updateRoundResult = function(playerWonRound, cpuMove) {
+    let cpuMoveText = this.div.children[0];
+    cpuMoveText.textContent =`The computer used ${cpuMove}.`;
     let narration = this.div.children[1];
-    if(playerWins) {
+    if(playerWonRound) {
       narration.textContent = 'Good!';
-    } else if(playerWins === undefined) {
+    } else if(playerWonRound === undefined) {
       narration.textContent = 'It\'s a tie.';
     } else {
       narration.textContent = 'Wrong guess.';
     }
   }
 
+  // Says who won when the game is over
   const updateGameResult = function(score) {
     let result = this.div.children[0];
-    if(+score.player.textContent > +score.cpu.textContent) {
+    let playerWonGame = +score.player.textContent > +score.cpu.textContent
+    if(playerWonGame) {
       result.textContent = 'You win!';
       return true;
     } else {
@@ -134,7 +125,6 @@ define(function() {
   return {
     getRandomInt: getRandomInt,
     getcpuMove: getcpuMove,
-    evalRound: evalRound,
     playSingleRound: playSingleRound,
     resetScore: resetScore,
     resetRoundResult: resetRoundResult,
