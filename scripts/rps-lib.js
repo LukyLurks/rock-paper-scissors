@@ -73,11 +73,11 @@ define(function() {
     cpuMoveText.textContent =`The computer used ${cpuMove}.`;
     let narration = this.div.children[1];
     if(playerWonRound) {
-      narration.textContent = 'Good!';
+      narration.textContent = 'You win!';
     } else if(playerWonRound === undefined) {
       narration.textContent = 'It\'s a tie.';
     } else {
-      narration.textContent = 'Wrong guess.';
+      narration.textContent = 'You lose.';
     }
   }
 
@@ -86,10 +86,10 @@ define(function() {
     let result = this.div.children[0];
     let playerWonGame = +score.player.textContent > +score.cpu.textContent
     if(playerWonGame) {
-      result.textContent = 'You win!';
+      result.textContent = 'Congratulations!';
       return true;
     } else {
-      result.textContent = 'You lose...'
+      result.textContent = 'Too bad!'
       return false;
     }
   }
@@ -123,17 +123,17 @@ define(function() {
   }
 
   return {
-    getRandomInt: getRandomInt,
-    getCpuMove: getCpuMove,
-    playSingleRound: playSingleRound,
-    resetScore: resetScore,
-    resetRoundResult: resetRoundResult,
-    resetGameResult: resetGameResult,
-    isGameover: isGameover,
-    updateScore: updateScore,
-    updateRoundResult: updateRoundResult,
-    updateGameResult: updateGameResult,
-    disableButtons: disableButtons,
-    enableButtons: enableButtons
+    getRandomInt,
+    getCpuMove,
+    playSingleRound,
+    resetScore,
+    resetRoundResult,
+    resetGameResult,
+    isGameover,
+    updateScore,
+    updateRoundResult,
+    updateGameResult,
+    disableButtons,
+    enableButtons
   }
 });
