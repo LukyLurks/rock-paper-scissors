@@ -5,7 +5,7 @@ define(function() {
   }
 
   // Returns randomly 'rock', 'paper' or 'scissors'
-  const getComputerSelection = function() {
+  const getcpuMove = function() {
     let choice = getRandomInt(3);
     if (choice === 0) {
       choice = 'rock';
@@ -37,10 +37,8 @@ define(function() {
   }
 
   // Plays a round of the game
-  const playSingleRound = function(playerSelection) {
-    let computerSelection = getComputerSelection();
-
-    let playerWins = evalRound(playerSelection, computerSelection);
+  const playSingleRound = function(playerMove, cpuMove) {
+    let playerWins = evalRound(playerMove, cpuMove);
     if (playerWins) {
       return true;
     } else if (playerWins === undefined) {
@@ -56,7 +54,9 @@ define(function() {
   }
 
   const resetRoundResult = function() {
-    let narration = this.div.children[0];
+    let cpuText = this.div.children[0];
+    let narration = this.div.children[1];
+    cpuText.textContent = '';
     narration.textContent = '';
   }
 
@@ -79,8 +79,10 @@ define(function() {
     }
   }
 
-  const updateRoundResult = function(playerWins) {
-    let narration = this.div.children[0];
+  const updateRoundResult = function(playerWins, cpuMove) {
+    let cpuText = this.div.children[0];
+    cpuText.textContent =`The computer used ${cpuMove}.`;
+    let narration = this.div.children[1];
     if(playerWins) {
       narration.textContent = 'Good!';
     } else if(playerWins === undefined) {
@@ -131,7 +133,7 @@ define(function() {
 
   return {
     getRandomInt: getRandomInt,
-    getComputerSelection: getComputerSelection,
+    getcpuMove: getcpuMove,
     evalRound: evalRound,
     playSingleRound: playSingleRound,
     resetScore: resetScore,

@@ -20,7 +20,8 @@ requirejs(['rps-lib'], function(rpsLib) {
   const winScoreText = document.querySelector('#winScore');
   
   const winScore = 5;
-  let playerSelection = '';
+  let playerMove = '';
+  let cpuMove = '';
   let playerWins = undefined;
   winScoreText.textContent = winScore;
 
@@ -34,10 +35,11 @@ requirejs(['rps-lib'], function(rpsLib) {
 
   rpsButtons.forEach((button) => {
     button.addEventListener('click', function(e) {
-      playerSelection = button.textContent.toLowerCase();
-      playerWins = rpsLib.playSingleRound(playerSelection);
+      playerMove = button.textContent.toLowerCase();
+      cpuMove = rpsLib.getcpuMove()
+      playerWins = rpsLib.playSingleRound(playerMove, cpuMove);
       score.update(playerWins);
-      roundResult.update(playerWins);
+      roundResult.update(playerWins, cpuMove);
       if(rpsLib.isGameover(score, winScore)) {
         rpsLib.disableButtons(rpsButtons);
         rpsLib.enableButtons(newGameButton);
