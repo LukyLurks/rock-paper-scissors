@@ -36,7 +36,7 @@ requirejs(['rps-lib'], function(rpsLib) {
   rpsButtons.forEach((button) => {
     button.addEventListener('click', function(e) {
       playerMove = button.textContent.toLowerCase();
-      cpuMove = rpsLib.getcpuMove()
+      cpuMove = rpsLib.getCpuMove()
       playerWonRound = rpsLib.playSingleRound(playerMove, cpuMove);
       score.update(playerWonRound);
       roundResult.update(playerWonRound, cpuMove);

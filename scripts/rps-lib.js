@@ -4,8 +4,8 @@ define(function() {
     return Math.floor(Math.random() * Math.floor(n));
   }
 
-  // Returns randomly 'rock', 'paper' or 'scissors'
-  const getcpuMove = function() {
+  // CPU's move is simply chosen at random
+  const getCpuMove = function() {
     let choice = getRandomInt(3);
     if (choice === 0) {
       choice = 'rock';
@@ -30,7 +30,7 @@ define(function() {
       return true;
     } else if(playerLostRound) {
       return false;
-    } else {
+    } else {  // if it's a tie
       return undefined;
     }
   }
@@ -81,7 +81,7 @@ define(function() {
     }
   }
 
-  // Says who won when the game is over
+  // Announces the winner when the game is over
   const updateGameResult = function(score) {
     let result = this.div.children[0];
     let playerWonGame = +score.player.textContent > +score.cpu.textContent
@@ -124,7 +124,7 @@ define(function() {
 
   return {
     getRandomInt: getRandomInt,
-    getcpuMove: getcpuMove,
+    getCpuMove: getCpuMove,
     playSingleRound: playSingleRound,
     resetScore: resetScore,
     resetRoundResult: resetRoundResult,
