@@ -8,7 +8,7 @@ to get familiar with JavaScript and the DOM.
 
 ## Usage
 
-- Visit [the game's page](https://lcyne.github.io/top-rock-paper-scissors/)
+- Visit [the game's page](https://lcyne.github.io/rock-paper-scissors/)
 - Play to your heart's content
 
 ## Structure
